@@ -1,796 +1,467 @@
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>U.D. Rotlet Molinar — Web Oficial</title>
-  <meta name="description" content="U.D. Rotlet Molinar: Campus, Escoleta, Equipos, Sesiones de mejora, Primer equipo y Sponsors." />
-  <style>
-    :root{
-      --bg:#0b1220;
-      --card:#121b2e;
-      --text:#eaf0ff;
-      --muted:#b8c2e0;
-      --accent:#2bd4ff;
-      --accent2:#7c5cff;
-      --border: rgba(255,255,255,.10);
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius: 18px;
-      --max: 1100px;
-      --pad: 20px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(1000px 600px at 15% -10%, rgba(43,212,255,.18), transparent 60%),
-        radial-gradient(900px 600px at 90% 10%, rgba(124,92,255,.16), transparent 55%),
-        linear-gradient(180deg, #070b14 0%, var(--bg) 60%, #070b14 100%);
-      line-height:1.5;
-    }
-    a{color:inherit}
-    .container{max-width:var(--max); margin:0 auto; padding:0 var(--pad)}
-    .btn{
-      display:inline-flex; gap:.6rem; align-items:center; justify-content:center;
-      padding:.85rem 1.1rem; border-radius:999px;
-      border:1px solid var(--border);
-      background: linear-gradient(135deg, rgba(43,212,255,.18), rgba(124,92,255,.12));
-      box-shadow: var(--shadow);
-      text-decoration:none;
-      font-weight:800;
-      transition: transform .15s ease, opacity .15s ease;
-      cursor:pointer;
-    }
-    .btn:hover{transform: translateY(-1px); opacity:.95}
-    .btn.secondary{background: rgba(255,255,255,.06); box-shadow:none}
-
-    header{
-      position: sticky; top:0; z-index:50;
-      backdrop-filter: blur(10px);
-      background: rgba(7,11,20,.55);
-      border-bottom:1px solid var(--border);
-    }
-    .nav{display:flex; align-items:center; justify-content:space-between; padding:12px 0; gap:14px;}
-    .brand{
-      display:flex; align-items:center; gap:12px;
-      font-weight:900; letter-spacing:.2px;
-      text-decoration:none; min-width:0;
-    }
-    .brand .title{display:flex; flex-direction:column; min-width:0;}
-    .brand .title strong{font-size:.98rem; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-    .brand .title span{font-size:.82rem; color:var(--muted); font-weight:800;}
-
-    .crest{
-      width:42px; height:42px; border-radius: 14px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.06);
-      box-shadow: var(--shadow);
-      display:grid; place-items:center;
-      overflow:hidden; flex: 0 0 auto;
-    }
-    .crest img{width:100%; height:100%; object-fit:cover}
-
-    nav ul{list-style:none; display:flex; gap:14px; padding:0; margin:0}
-    nav a{
-      text-decoration:none; color:var(--muted);
-      font-weight:800; padding:8px 10px; border-radius:10px;
-      transition: background .15s ease, color .15s ease;
-      white-space:nowrap;
-    }
-    nav a:hover{background: rgba(255,255,255,.06); color:var(--text)}
-    .nav-actions{display:flex; gap:10px; align-items:center}
-    .menu-btn{display:none}
-
-    .hero{padding: 56px 0 26px}
-    .hero-grid{display:grid; grid-template-columns: 1.15fr .85fr; gap:22px; align-items:stretch;}
-    .hero h1{font-size: clamp(2rem, 4vw, 3.2rem); line-height:1.1; margin:0 0 12px; letter-spacing:-.5px;}
-    .hero p{color:var(--muted); margin:0 0 18px; max-width: 65ch}
-    .hero-card{
-      background: rgba(18,27,46,.72);
-      border:1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: var(--shadow);
-    }
-    .tag{
-      display:inline-flex; gap:8px; align-items:center;
-      padding: 6px 10px; border-radius:999px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.05);
-      color: var(--muted);
-      font-weight:900; font-size:.85rem;
-    }
-    .stats{display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-top: 14px;}
-    .stat{border:1px solid var(--border); border-radius: 14px; padding: 12px; background: rgba(255,255,255,.04);}
-    .stat b{display:block; font-size:1.15rem}
-    .stat span{color:var(--muted); font-size:.9rem; font-weight:800}
-
-    .match{display:flex; flex-direction:column; gap:10px;}
-    .pill{
-      display:inline-flex; width:max-content; gap:8px; align-items:center;
-      padding:6px 10px; border-radius:999px;
-      background: rgba(43,212,255,.12);
-      border:1px solid rgba(43,212,255,.25);
-      color: var(--text);
-      font-weight:900; font-size:.9rem;
-    }
-    .match-row{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px; padding: 14px;
-      border:1px solid var(--border);
-      border-radius: 16px;
-      background: rgba(255,255,255,.04);
-    }
-    .team{display:flex; align-items:center; gap:10px; min-width: 0;}
-    .badge{
-      width:36px; height:36px; border-radius:12px;
-      display:grid; place-items:center;
-      background: rgba(255,255,255,.07);
-      border:1px solid var(--border);
-      font-weight:900;
-    }
-    .team .name{font-weight:900; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-    .score{
-      font-weight:900; letter-spacing:1px;
-      padding: 6px 10px; border-radius: 12px;
-      border:1px solid var(--border);
-      background: rgba(0,0,0,.18);
-    }
-
-    section{padding: 34px 0}
-    .section-title{display:flex; align-items:flex-end; justify-content:space-between; gap:12px; margin-bottom: 14px;}
-    h2{margin:0; font-size:1.6rem}
-    .hint{color:var(--muted); font-weight:800; font-size:.95rem}
-
-    .grid{display:grid; gap:14px; grid-template-columns: repeat(12, 1fr);}
-    .card{
-      grid-column: span 6;
-      background: rgba(18,27,46,.72);
-      border:1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      box-shadow: var(--shadow);
-    }
-    .card.small{grid-column: span 4}
-    .card.full{grid-column: span 12}
-    .card p{color:var(--muted); margin: 8px 0 0}
-
-    .list{display:grid; gap:10px; margin-top:10px;}
-    .item{
-      display:flex; gap:10px; align-items:flex-start;
-      padding:12px; border:1px solid var(--border);
-      border-radius: 16px; background: rgba(255,255,255,.04);
-    }
-    .icon{
-      width:38px; height:38px; border-radius:14px;
-      display:grid; place-items:center;
-      background: rgba(255,255,255,.06);
-      border:1px solid var(--border);
-      flex:0 0 auto;
-      font-weight:900;
-    }
-    .item b{display:block}
-    .item span{display:block; color:var(--muted); font-weight:800; font-size:.92rem}
-
-    .roster{display:grid; grid-template-columns: repeat(4, 1fr); gap:12px;}
-    .player{
-      border:1px solid var(--border);
-      border-radius: 16px;
-      background: rgba(255,255,255,.04);
-      padding: 12px;
-      display:flex; gap:10px; align-items:center;
-    }
-    .avatar{
-      width:44px; height:44px; border-radius:16px;
-      background: linear-gradient(135deg, rgba(43,212,255,.22), rgba(124,92,255,.18));
-      border:1px solid var(--border);
-      display:grid; place-items:center;
-      font-weight:900; flex:0 0 auto;
-    }
-    .player .meta{min-width:0}
-    .player b{display:block; font-size:1rem}
-    .player span{display:block; color:var(--muted); font-weight:800; font-size:.9rem}
-
-    footer{padding: 30px 0 40px; border-top:1px solid var(--border); color: var(--muted);}
-    .footer-grid{display:grid; grid-template-columns: 1.2fr .8fr .8fr; gap:16px;}
-    .footer-grid a{color:var(--muted); text-decoration:none}
-    .footer-grid a:hover{color:var(--text)}
-    .copyright{margin-top:16px; font-size:.9rem}
-
-    @media (max-width: 980px){
-      .hero-grid{grid-template-columns: 1fr}
-      nav ul{display:none}
-      .menu-btn{display:inline-flex}
-      .card.small{grid-column: span 6}
-      .roster{grid-template-columns: repeat(2, 1fr)}
-      .footer-grid{grid-template-columns: 1fr}
-    }
-    @media (max-width: 560px){
-      .card, .card.small{grid-column: span 12}
-      .stats{grid-template-columns: 1fr}
-      .roster{grid-template-columns: 1fr}
-    }
-  </style>
-</head>
-
-<body>
-  <header>
-    <div class="container">
-      <div class="nav">
-        <a class="brand" href="#inicio" aria-label="Ir al inicio">
-          <div class="crest" title="Escudo U.D. Rotlet Molinar">
-            <img src="escudo-rotlet-molinar.jpg" alt="Escudo U.D. Rotlet Molinar" />
-          </div>
-          <div class="title">
-            <strong>U.D. Rotlet Molinar</strong>
-            <span>Web Oficial · Campus · Escoleta · Fútbol Base</span>
-          </div>
-        </a>
-
-        <nav aria-label="Navegación principal">
-          <ul>
-            <li><a href="#campus">Campus</a></li>
-            <li><a href="#escoleta">Escoleta</a></li>
-            <li><a href="#equipos">Equipos</a></li>
-            <li><a href="#mejora">Mejora</a></li>
-            <li><a href="#primer-equipo">1º Equipo</a></li>
-            <li><a href="#sponsors">Sponsors</a></li>
-            <li><a href="#contacto">Contacto</a></li>
-          </ul>
-        </nav>
-
-        <div class="nav-actions">
-          <a class="btn secondary" href="#campus">Inscripciones</a>
-          <a class="btn" href="#contacto">Contacto</a>
-          <a class="btn secondary menu-btn" href="#menu">Menú</a>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main id="inicio">
-    <section class="hero">
-      <div class="container">
-        <div class="hero-grid">
-          <div class="hero-card">
-            <span class="tag">⚽ U.D. Rotlet Molinar</span>
-            <h1>Formación, valores y fútbol.<br/>Bienvenidos al <span style="color:var(--accent)">Rotlet Molinar</span>.</h1>
-            <p>
-              Campus de verano, escoleta, equipos, sesiones de mejora, primer equipo y patrocinadores.
-            </p>
-            <div style="display:flex; gap:10px; flex-wrap:wrap">
-              <a class="btn" href="#campus">Ver Campus</a>
-              <a class="btn secondary" href="#escoleta">Ver Escoleta</a>
-            </div>
-
-            <div class="stats" aria-label="Datos rápidos">
-              <div class="stat"><b>3–15</b><span>Campus</span></div>
-              <div class="stat"><b>6–15</b><span>Mejora</span></div>
-              <div class="stat"><b>7</b><span>Categorías</span></div>
-            </div>
-          </div>
-
-          <div class="hero-card">
-            <div class="match">
-              <span class="pill">📍 Instalaciones</span>
-              <div class="match-row">
-                <div class="team">
-                  <div class="badge">UD</div>
-                  <div class="name">Campo del Rotlet Molinar</div>
-                </div>
-                <div class="score">MAP</div>
-                <div class="team" style="justify-content:flex-end">
-                  <a class="btn secondary" href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Cómo llegar</a>
-                </div>
-              </div>
-              <p style="margin-top:10px">
-                <a href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener" style="color:var(--muted); font-weight:900; text-decoration:none;">
-                  Abrir ubicación en Google Maps
-                </a>
-              </p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- CAMPUS -->
-    <section id="campus">
-      <div class="container">
-        <div class="section-title">
-          <h2>Campus de Verano 2026</h2>
-          <div class="hint">Del 29 de junio al 7 de agosto · Para niños y niñas de 3 a 15 años</div>
-        </div>
-
-        <div class="grid">
-          <div class="card">
-            <span class="tag">⚽ Campus U.D. Rotlet Molinar</span>
-            <h3 style="margin:10px 0 0">Fútbol, juegos y actividades adaptadas</h3>
-            <p>
-              Un campus para aprender jugando, mejorar y disfrutar en un entorno seguro y organizado.
-              <br/><b>¡Los viernes, salida a la playa!</b>
-            </p>
-
-            <div class="list">
-              <div class="item">
-                <div class="icon">📍</div>
-                <div>
-                  <b>Lugar</b>
-                  <span>
-                    <a href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">
-                      Campo del Rotlet Molinar (ver en Google Maps)
-                    </a>
-                  </span>
-                </div>
-              </div>
-              <div class="item">
-                <div class="icon">⏰</div>
-                <div>
-                  <b>Horario campus</b>
-                  <span>09:00–14:00 (lunes a viernes)</span>
-                </div>
-              </div>
-              <div class="item">
-                <div class="icon">🌅</div>
-                <div>
-                  <b>Servicios extra (opcional)</b>
-                  <span>Matinera 08:00–09:00 · Comedor 14:00–15:15</span>
-                </div>
-              </div>
-            </div>
-
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
-              <a class="btn secondary" href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Cómo llegar</a>
-            </div>
-          </div>
-
-          <div class="card">
-            <span class="tag">💶 Precios semanales</span>
-            <h3 style="margin:10px 0 0">Modalidades</h3>
-
-            <div class="list">
-              <div class="item"><div class="icon">1</div><div><b>1 semana</b><span>80 €</span></div></div>
-              <div class="item"><div class="icon">2</div><div><b>2 semanas</b><span>150 €</span></div></div>
-              <div class="item"><div class="icon">3</div><div><b>3 semanas</b><span>230 €</span></div></div>
-              <div class="item"><div class="icon">4</div><div><b>4 semanas</b><span>300 €</span></div></div>
-              <div class="item"><div class="icon">5</div><div><b>5 semanas</b><span>380 €</span></div></div>
-              <div class="item"><div class="icon">6</div><div><b>6 semanas</b><span>460 €</span></div></div>
-            </div>
-
-            <p style="margin-top:10px"><b style="color:var(--text)">Descuento para hermanos/as</b> (indicar en la inscripción).</p>
-          </div>
-
-          <div class="card full">
-            <span class="tag">📝 Inscripciones</span>
-            <h3 style="margin:10px 0 0">Plazas limitadas</h3>
-
-            <div class="grid" style="margin-top:12px">
-              <div class="card" style="grid-column:span 6; background: rgba(255,255,255,.04); box-shadow:none">
-                <b style="display:block; margin-bottom:6px">📞 Contacto</b>
-                <div style="color:var(--muted); font-weight:800">
-                  • 652 480 633<br/>
-                  • 606 302 463<br/>
-                  • Redes sociales, WhatsApp y oficinas del club
-                </div>
-                <p style="margin-top:10px; color:var(--muted)">
-                  Directora del campus: <b style="color:var(--text)">Claudia Almeida</b>
-                </p>
-              </div>
-
-              <div class="card" style="grid-column:span 6; background: rgba(255,255,255,.04); box-shadow:none">
-                <b style="display:block; margin-bottom:6px">💳 Pago por transferencia</b>
-                <div style="color:var(--muted); font-weight:800">
-                  IBAN: <b style="color:var(--text)">ES33 2100 6863 3413 0033 8352</b><br/>
-                  Beneficiario: <b style="color:var(--text)">UNIÓN DEPORTIVA ROTLET MOLINAR</b>
-                </div>
-              </div>
-            </div>
-
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
-              <a class="btn" href="https://wa.me/34652480633?text=Hola%20UD%20Rotlet%20Molinar,%20quiero%20inscribirme%20en%20el%20Campus%20de%20Verano%202026."
-                 target="_blank" rel="noopener">Inscribirme (WhatsApp)</a>
-              <a class="btn secondary" href="https://wa.me/34606302463?text=Hola%20UD%20Rotlet%20Molinar,%20quiero%20informaci%C3%B3n%20del%20Campus%20de%20Verano%202026."
-                 target="_blank" rel="noopener">Info (WhatsApp 2)</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ESCOLETA -->
-    <section id="escoleta">
-      <div class="container">
-        <div class="section-title">
-          <h2>Escoleta 2026–2027</h2>
-          <div class="hint">Martes y jueves 17:30–18:30 · Cuota mensual 35€</div>
-        </div>
-
-        <div class="grid">
-          <div class="card">
-            <span class="tag">👶 Iniciación</span>
-            <h3 style="margin:10px 0 0">Entrenamientos adaptados a su edad</h3>
-            <p>Coordinación y juegos con balón en un entorno seguro y divertido.</p>
-
-            <div class="list">
-              <div class="item">
-                <div class="icon">⏰</div>
-                <div><b>Horario</b><span>Martes y jueves · 17:30 – 18:30 h</span></div>
-              </div>
-              <div class="item">
-                <div class="icon">📅</div>
-                <div><b>Temporada</b><span>Del 14 de septiembre al 30 de junio</span></div>
-              </div>
-              <div class="item">
-                <div class="icon">📍</div>
-                <div>
-                  <b>Lugar</b>
-                  <span><a href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Campo del Rotlet Molinar (Google Maps)</a></span>
-                </div>
-              </div>
-            </div>
-
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
-              <a class="btn secondary" href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Cómo llegar</a>
-            </div>
-
-            <p style="margin-top:10px; color:var(--muted)">
-              Monitores: <b style="color:var(--text)">1 monitor por cada 10–12 niños</b>.
-            </p>
-          </div>
-
-          <div class="card">
-            <span class="tag">💶 Cuotas</span>
-            <h3 style="margin:10px 0 0">Precio</h3>
-
-            <div class="list">
-              <div class="item"><div class="icon">€</div><div><b>Cuota mensual</b><span>35 €</span></div></div>
-              <div class="item"><div class="icon">🧾</div><div><b>Matrícula</b><span>60 / 65 €</span></div></div>
-            </div>
-
-            <p style="margin-top:10px; color:var(--muted)">
-              Matrícula incluye: seguro + equipación (camiseta, pantalón corto, calcetas, sudadera) + balón.
-            </p>
-          </div>
-
-          <div class="card full">
-            <span class="tag">📝 Inscripciones</span>
-            <h3 style="margin:10px 0 0">Apúntate por WhatsApp</h3>
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
-              <a class="btn" href="https://wa.me/34652480633?text=Hola%20UD%20Rotlet%20Molinar,%20quiero%20informaci%C3%B3n%20para%20la%20Escoleta%202026-2027." target="_blank" rel="noopener">WhatsApp</a>
-              <a class="btn secondary" href="https://wa.me/34606302463?text=Hola%20UD%20Rotlet%20Molinar,%20quiero%20informaci%C3%B3n%20para%20la%20Escoleta%202026-2027." target="_blank" rel="noopener">WhatsApp (2º)</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- EQUIPOS -->
-    <section id="equipos">
-      <div class="container">
-        <div class="section-title">
-          <h2>Equipos</h2>
-          <div class="hint">Prebenjamín · Benjamín · Alevín · Infantil · Cadete · Juvenil · 1º Equipo</div>
-        </div>
-
-        <div class="card full">
-          <span class="tag">ℹ️ Pruebas</span>
-          <h3 style="margin:10px 0 0">¿Quieres venir a probar?</h3>
-          <p>Escríbenos y te diremos día, hora y grupo recomendado según edad y nivel.</p>
-          <a class="btn" href="https://wa.me/34652480633?text=Hola%20UD%20Rotlet%20Molinar,%20quiero%20informaci%C3%B3n%20para%20venir%20a%20probar." target="_blank" rel="noopener">WhatsApp</a>
-        </div>
-
-        <div class="grid" style="margin-top:14px">
-          <!-- Tarjetas pro (rellenables) -->
-          <div class="card small"><span class="tag">🐣 Prebenjamín</span><h3 style="margin:10px 0 0">Prebenjamín</h3><p><b style="color:var(--text)">Entrenador/a:</b> (poner)<br/><b style="color:var(--text)">Horario:</b> (poner)<br/><b style="color:var(--text)">Campo:</b> <a href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Rotlet Molinar</a></p><div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px"><a class="btn secondary" href="https://wa.me/34652480633?text=Hola%20UD%20Rotlet%20Molinar,%20quiero%20probar%20en%20Prebenjam%C3%ADn." target="_blank" rel="noopener">Quiero probar</a><a class="btn secondary" href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Cómo llegar</a></div></div>
-
-          <div class="card small"><span class="tag">🧒 Benjamín</span><h3 style="margin:10px 0 0">Benjamín</h3><p><b style="color:var(--text)">Entrenador/a:</b> (poner)<br/><b style="color:var(--text)">Horario:</b> (poner)<br/><b style="color:var(--text)">Campo:</b> <a href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Rotlet Molinar</a></p><div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px"><a class="btn secondary" href="https://wa.me/34652480633?text=Hola%20UD%20Rotlet%20Molinar,%20quiero%20probar%20en%20Benjam%C3%ADn." target="_blank" rel="noopener">Quiero probar</a><a class="btn secondary" href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Cómo llegar</a></div></div>
-
-          <div class="card small"><span class="tag">🧑 Alevín</span><h3 style="margin:10px 0 0">Alevín</h3><p><b style="color:var(--text)">Entrenador/a:</b> (poner)<br/><b style="color:var(--text)">Horario:</b> (poner)<br/><b style="color:var(--text)">Campo:</b> <a href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Rotlet Molinar</a></p><div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px"><a class="btn secondary" href="https://wa.me/34652480633?text=Hola%20UD%20Rotlet%20Molinar,%20quiero%20probar%20en%20Alev%C3%ADn." target="_blank" rel="noopener">Quiero probar</a><a class="btn secondary" href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Cómo llegar</a></div></div>
-
-          <div class="card small"><span class="tag">🧑‍🎓 Infantil</span><h3 style="margin:10px 0 0">Infantil</h3><p><b style="color:var(--text)">Entrenador/a:</b> (poner)<br/><b style="color:var(--text)">Horario:</b> (poner)<br/><b style="color:var(--text)">Campo:</b> <a href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Rotlet Molinar</a></p><div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px"><a class="btn secondary" href="https://wa.me/34652480633?text=Hola%20UD%20Rotlet%20Molinar,%20quiero%20probar%20en%20Infantil." target="_blank" rel="noopener">Quiero probar</a><a class="btn secondary" href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Cómo llegar</a></div></div>
-
-          <div class="card small"><span class="tag">🧑‍🎓 Cadete</span><h3 style="margin:10px 0 0">Cadete</h3><p><b style="color:var(--text)">Entrenador/a:</b> (poner)<br/><b style="color:var(--text)">Horario:</b> (poner)<br/><b style="color:var(--text)">Campo:</b> <a href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Rotlet Molinar</a></p><div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px"><a class="btn secondary" href="https://wa.me/34652480633?text=Hola%20UD%20Rotlet%20Molinar,%20quiero%20probar%20en%20Cadete." target="_blank" rel="noopener">Quiero probar</a><a class="btn secondary" href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Cómo llegar</a></div></div>
-
-          <div class="card small"><span class="tag">🏆 Juvenil</span><h3 style="margin:10px 0 0">Juvenil</h3><p><b style="color:var(--text)">Entrenador/a:</b> (poner)<br/><b style="color:var(--text)">Horario:</b> (poner)<br/><b style="color:var(--text)">Campo:</b> <a href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Rotlet Molinar</a></p><div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px"><a class="btn secondary" href="https://wa.me/34652480633?text=Hola%20UD%20Rotlet%20Molinar,%20quiero%20probar%20en%20Juvenil." target="_blank" rel="noopener">Quiero probar</a><a class="btn secondary" href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Cómo llegar</a></div></div>
-
-          <div class="card full">
-            <span class="tag">🔝 1º Equipo</span>
-            <h3 style="margin:10px 0 0">Primer Equipo</h3>
-            <p><b style="color:var(--text)">Entrenador:</b> (poner)<br/><b style="color:var(--text)">Entrenos:</b> (poner)<br/><b style="color:var(--text)">Campo:</b> <a href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Rotlet Molinar</a></p>
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
-              <a class="btn secondary" href="https://wa.me/34652480633?text=Hola%20UD%20Rotlet%20Molinar,%20quiero%20informaci%C3%B3n%20sobre%20el%201%C2%BA%20Equipo." target="_blank" rel="noopener">Contactar</a>
-              <a class="btn secondary" href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Cómo llegar</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- MEJORA -->
-    <section id="mejora">
-      <div class="container">
-        <div class="section-title">
-          <h2>Sesiones de mejora de fútbol</h2>
-          <div class="hint">Un día más de entreno · Un paso más en su evolución</div>
-        </div>
-
-        <div class="grid">
-          <div class="card">
-            <span class="tag">⚽ Refuerzo</span>
-            <h3 style="margin:10px 0 0">Complemento al entrenamiento</h3>
-            <p>Sesiones para seguir creciendo: refuerzo técnico/táctico. Abierto a otros clubes.</p>
-
-            <div class="list">
-              <div class="item"><div class="icon">📍</div><div><b>Lugar</b><span><a href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Campo del Rotlet Molinar (Google Maps)</a></span></div></div>
-              <div class="item"><div class="icon">👦👧</div><div><b>Edades</b><span>6 a 15 años</span></div></div>
-            </div>
-
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
-              <a class="btn secondary" href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Cómo llegar</a>
-            </div>
-          </div>
-
-          <div class="card">
-            <span class="tag">⏰ Horarios</span>
-            <h3 style="margin:10px 0 0">Días</h3>
-            <div class="list">
-              <div class="item"><div class="icon">L</div><div><b>Lunes</b><span>17:30 – 18:30</span></div></div>
-              <div class="item"><div class="icon">M</div><div><b>Martes</b><span>18:30 – 19:30</span></div></div>
-            </div>
-          </div>
-
-          <div class="card">
-            <span class="tag">💶 Tarifas</span>
-            <h3 style="margin:10px 0 0">Precios</h3>
-            <div class="list">
-              <div class="item"><div class="icon">1</div><div><b>1 sesión</b><span>10 €</span></div></div>
-              <div class="item"><div class="icon">2</div><div><b>2 sesiones</b><span>20 €</span></div></div>
-              <div class="item"><div class="icon">3</div><div><b>3 sesiones</b><span>30 €</span></div></div>
-              <div class="item"><div class="icon">4</div><div><b>4 sesiones</b><span>35 €</span></div></div>
-              <div class="item"><div class="icon">€</div><div><b>Matrícula</b><span>10 € (seguro)</span></div></div>
-            </div>
-          </div>
-
-          <div class="card full">
-            <span class="tag">📝 Inscripción</span>
-            <h3 style="margin:10px 0 0">Reservas</h3>
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
-              <a class="btn" href="https://wa.me/34652480633?text=Hola%20UD%20Rotlet%20Molinar,%20quiero%20apuntarme%20a%20Sesiones%20de%20Mejora." target="_blank" rel="noopener">WhatsApp</a>
-              <a class="btn secondary" href="#contacto">Contacto</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PRIMER EQUIPO -->
-    <section id="primer-equipo">
-      <div class="container">
-        <div class="section-title">
-          <h2>Primer Equipo</h2>
-          <div class="hint">Plantilla y cuerpo técnico (rellenable)</div>
-        </div>
-
-        <div class="card full">
-          <span class="tag">🏟️ Competición (poner)</span>
-          <h3 style="margin:10px 0 0">Plantilla (rellenar)</h3>
-          <p>Cuando queráis, me pasáis la lista y la dejo completa.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- SPONSORS -->
-    <section id="sponsors">
-      <div class="container">
-        <div class="section-title">
-          <h2>Sponsors</h2>
-          <div class="hint">Patrocinio del Campus de Verano · Packs Bronce / Plata / Oro</div>
-        </div>
-
-        <div class="grid">
-          <div class="card full">
-            <span class="tag">📣 Patrocina el Campus</span>
-            <h3 style="margin:10px 0 0">Visibilidad local para tu negocio</h3>
-            <p>Asocia tu marca al deporte local y llega a familias del barrio durante el campus.</p>
-
-            <div class="list">
-              <div class="item"><div class="icon">👨‍👩‍👧‍👦</div><div><b>Alcance</b><span>+100 niños (3–15) y +100 familias del barrio.</span></div></div>
-              <div class="item"><div class="icon">📌</div><div><b>Presencia</b><span>Carteles, camisetas y redes sociales.</span></div></div>
-            </div>
-
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
-              <a class="btn" href="https://wa.me/34652480633?text=Hola%20UD%20Rotlet%20Molinar,%20me%20interesa%20patrocinar%20el%20Campus%20de%20Verano.%20%C2%BFMe%20pas%C3%A1is%20informaci%C3%B3n%3F" target="_blank" rel="noopener">WhatsApp</a>
-              <a class="btn secondary" href="mailto:info@udrotletmolinar.com?subject=Patrocinio%20Campus%20UD%20Rotlet%20Molinar&body=Hola,%20me%20interesa%20patrocinar%20el%20Campus%20de%20Verano.%20%C2%BFPod%C3%A9is%20enviarme%20el%20dossier%20y%20condiciones%3F">Enviar email</a>
-            </div>
-          </div>
-
-          <div class="card small">
-            <span class="tag">🥉 Bronce</span>
-            <h3 style="margin:10px 0 0">150€ – 300€</h3>
-            <div class="list">
-              <div class="item"><div class="icon">🪧</div><div><b>Logo pequeño</b><span>En el cartel del campus</span></div></div>
-              <div class="item"><div class="icon">📱</div><div><b>Redes</b><span>1 publicación por semana</span></div></div>
-            </div>
-          </div>
-
-          <div class="card small">
-            <span class="tag">🥈 Plata</span>
-            <h3 style="margin:10px 0 0">350€ – 600€</h3>
-            <div class="list">
-              <div class="item"><div class="icon">🗂️</div><div><b>Logo</b><span>Cartel + dossier + espalda camiseta</span></div></div>
-              <div class="item"><div class="icon">📲</div><div><b>Redes</b><span>Presencia todas las semanas</span></div></div>
-            </div>
-          </div>
-
-          <div class="card small">
-            <span class="tag">🥇 Oro</span>
-            <h3 style="margin:10px 0 0">600€ – 1.000€</h3>
-            <div class="list">
-              <div class="item"><div class="icon">👕</div><div><b>Logo grande</b><span>Pecho camiseta del campus</span></div></div>
-              <div class="item"><div class="icon">🏟️</div><div><b>Pancarta</b><span>En el campo</span></div></div>
-            </div>
-          </div>
-
-          <div class="card full">
-            <span class="tag">📄 Dossier</span>
-            <h3 style="margin:10px 0 0">Dossier de patrocinio</h3>
-            <p>
-              Descarga el dossier del Campus de Verano con los packs Bronce / Plata / Oro.
-            </p>
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
-              <a class="btn secondary" href="dossier-sponsors.png" download>Descargar (PNG)</a>
-              <a class="btn secondary" href="dossier-sponsors.png" target="_blank" rel="noopener">Ver</a>
-              <a class="btn" href="https://wa.me/34652480633?text=Hola%20UD%20Rotlet%20Molinar,%20me%20interesa%20patrocinar%20el%20Campus.%20He%20visto%20el%20dossier%20y%20quiero%20m%C3%A1s%20info." target="_blank" rel="noopener">WhatsApp</a>
-            </div>
-          </div>
-
-          <div class="card full">
-            <span class="tag">🏷️ Sponsors</span>
-            <h3 style="margin:10px 0 0">Patrocinadores (próximamente)</h3>
-            <p>
-              Estamos cerrando acuerdos para esta temporada. Si quieres colaborar, contacta con nosotros.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACTO -->
-    <section id="contacto">
-      <div class="container">
-        <div class="section-title">
-          <h2>Contacto</h2>
-          <div class="hint">Inscripciones · dudas · sponsors</div>
-        </div>
-
-        <div class="grid">
-          <div class="card">
-            <span class="tag">📍 Sede</span>
-            <h3 style="margin:10px 0 0">Campo del Rotlet Molinar</h3>
-            <p>
-              📞 <b style="color:var(--text)">652 480 633</b><br/>
-              📞 <b style="color:var(--text)">606 302 463</b><br/>
-              📍 <a href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Ver ubicación en Google Maps</a>
-            </p>
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
-              <a class="btn secondary" href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Cómo llegar</a>
-            </div>
-          </div>
-
-          <div class="card">
-            <span class="tag">✉️ Formulario</span>
-            <h3 style="margin:10px 0 0">Escríbenos</h3>
-            <form onsubmit="event.preventDefault(); alert('Mensaje enviado (demo)');">
-              <div style="display:grid; gap:10px; margin-top:10px">
-                <input required placeholder="Nombre"
-                  style="padding:12px 14px; border-radius:14px; border:1px solid var(--border); background: rgba(255,255,255,.06); color:var(--text);">
-                <input required type="email" placeholder="Email"
-                  style="padding:12px 14px; border-radius:14px; border:1px solid var(--border); background: rgba(255,255,255,.06); color:var(--text);">
-                <select required
-                  style="padding:12px 14px; border-radius:14px; border:1px solid var(--border); background: rgba(255,255,255,.06); color:var(--text);">
-                  <option value="" selected disabled>Motivo</option>
-                  <option>Campus</option>
-                  <option>Escoleta</option>
-                  <option>Equipos</option>
-                  <option>Sesiones de mejora</option>
-                  <option>Primer equipo</option>
-                  <option>Sponsors</option>
-                  <option>Otros</option>
-                </select>
-                <textarea required rows="4" placeholder="Tu mensaje"
-                  style="padding:12px 14px; border-radius:14px; border:1px solid var(--border); background: rgba(255,255,255,.06); color:var(--text); resize:vertical;"></textarea>
-                <button class="btn" type="submit">Enviar</button>
-              </div>
-            </form>
-            <p style="margin-top:10px">(Demo) Para que el formulario envíe de verdad, se conecta a Formspree / Netlify Forms.</p>
-          </div>
-
-          <div class="card full">
-            <span class="tag">🗺️ Ubicación</span>
-            <h3 style="margin:10px 0 0">Mapa — Campo del Rotlet Molinar</h3>
-
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 12px">
-              <a class="btn secondary" href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Abrir en Google Maps</a>
-            </div>
-
-            <div style="position:relative; width:100%; padding-top:56.25%; border-radius:16px; overflow:hidden; border:1px solid var(--border); background:rgba(255,255,255,.04);">
-              <iframe
-                title="Mapa Campo del Rotlet Molinar"
-                src="https://www.google.com/maps?q=https://maps.app.goo.gl/vAGYwWmdTUcX89gc9&output=embed"
-                style="position:absolute; inset:0; width:100%; height:100%; border:0;"
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-                allowfullscreen>
-              </iframe>
-            </div>
-
-            <p style="margin-top:10px; color:var(--muted); font-weight:800">
-              Si el mapa no carga en algún navegador, usa el botón “Abrir en Google Maps”.
-            </p>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <section id="menu">
-      <div class="container">
-        <div class="card full">
-          <h3 style="margin:0 0 8px">Menú (móvil)</h3>
-          <p style="margin:0 0 10px">Accesos rápidos:</p>
-          <div style="display:flex; gap:10px; flex-wrap:wrap">
-            <a class="btn secondary" href="#campus">Campus</a>
-            <a class="btn secondary" href="#escoleta">Escoleta</a>
-            <a class="btn secondary" href="#equipos">Equipos</a>
-            <a class="btn secondary" href="#mejora">Mejora</a>
-            <a class="btn secondary" href="#primer-equipo">1º Equipo</a>
-            <a class="btn secondary" href="#sponsors">Sponsors</a>
-            <a class="btn secondary" href="#contacto">Contacto</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px">
-            <div class="crest" aria-hidden="true"><img src="escudo-rotlet-molinar.jpg" alt="" /></div>
-            <div style="font-weight:900">U.D. Rotlet Molinar</div>
-          </div>
-          <div>Campus, escoleta, equipos, sesiones de mejora, primer equipo y patrocinadores.</div>
-        </div>
-
-        <div>
-          <div style="font-weight:900; margin-bottom:8px">Secciones</div>
-          <div style="display:grid; gap:6px">
-            <a href="#campus">Campus</a>
-            <a href="#escoleta">Escoleta</a>
-            <a href="#mejora">Mejora</a>
-            <a href="#sponsors">Sponsors</a>
-          </div>
-        </div>
-
-        <div>
-          <div style="font-weight:900; margin-bottom:8px">Ubicación</div>
-          <div style="display:grid; gap:6px">
-            <a href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Campo del Rotlet Molinar</a>
-            <a href="#contacto">Contacto</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="copyright">© <span id="year"></span> U.D. Rotlet Molinar · Todos los derechos reservados</div>
-    </div>
-  </footer>
-
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-</body>
-</html>
+{\rtf1\ansi\ansicpg1252\cocoartf2867
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!doctype html>\
+<html lang="es">\
+<head>\
+  <meta charset="utf-8" />\
+  <meta name="viewport" content="width=device-width, initial-scale=1" />\
+  <title>U.D. Rotlet Molinar \'97 Web Oficial</title>\
+  <meta name="description" content="U.D. Rotlet Molinar: Campus, Escoleta, Equipos, Sesiones de mejora, Primer equipo y Sponsors." />\
+  <style>\
+    :root\{\
+      --bg:#0b1220; --text:#eaf0ff; --muted:#b8c2e0;\
+      --accent:#2bd4ff; --accent2:#7c5cff;\
+      --border: rgba(255,255,255,.10);\
+      --shadow: 0 10px 30px rgba(0,0,0,.35);\
+      --radius: 18px; --max: 1100px; --pad: 20px;\
+    \}\
+    *\{box-sizing:border-box\}\
+    body\{\
+      margin:0; line-height:1.5; color:var(--text);\
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;\
+      background:\
+        radial-gradient(1000px 600px at 15% -10%, rgba(43,212,255,.18), transparent 60%),\
+        radial-gradient(900px 600px at 90% 10%, rgba(124,92,255,.16), transparent 55%),\
+        linear-gradient(180deg, #070b14 0%, var(--bg) 60%, #070b14 100%);\
+    \}\
+    a\{color:inherit\}\
+    .container\{max-width:var(--max); margin:0 auto; padding:0 var(--pad)\}\
+    .btn\{\
+      display:inline-flex; gap:.6rem; align-items:center; justify-content:center;\
+      padding:.85rem 1.1rem; border-radius:999px;\
+      border:1px solid var(--border);\
+      background: linear-gradient(135deg, rgba(43,212,255,.18), rgba(124,92,255,.12));\
+      box-shadow: var(--shadow);\
+      text-decoration:none; font-weight:800;\
+      transition: transform .15s ease, opacity .15s ease;\
+    \}\
+    .btn:hover\{transform: translateY(-1px); opacity:.95\}\
+    .btn.secondary\{background: rgba(255,255,255,.06); box-shadow:none\}\
+\
+    header\{\
+      position: sticky; top:0; z-index:50;\
+      backdrop-filter: blur(10px);\
+      background: rgba(7,11,20,.55);\
+      border-bottom:1px solid var(--border);\
+    \}\
+    .nav\{display:flex; align-items:center; justify-content:space-between; padding:12px 0; gap:14px;\}\
+    .brand\{display:flex; align-items:center; gap:12px; font-weight:900; text-decoration:none; min-width:0;\}\
+    .title strong\{display:block; font-size:.98rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;\}\
+    .title span\{display:block; font-size:.82rem; color:var(--muted); font-weight:800;\}\
+    .crest\{\
+      width:42px; height:42px; border-radius:14px; overflow:hidden;\
+      border:1px solid var(--border); background: rgba(255,255,255,.06); box-shadow: var(--shadow);\
+      display:grid; place-items:center; flex:0 0 auto;\
+    \}\
+    .crest img\{width:100%; height:100%; object-fit:cover\}\
+\
+    nav ul\{list-style:none; display:flex; gap:14px; padding:0; margin:0\}\
+    nav a\{color:var(--muted); font-weight:800; text-decoration:none; padding:8px 10px; border-radius:10px\}\
+    nav a:hover\{background: rgba(255,255,255,.06); color:var(--text)\}\
+    .menu-btn\{display:none\}\
+    .nav-actions\{display:flex; gap:10px; align-items:center\}\
+\
+    section\{padding: 34px 0\}\
+    .section-title\{display:flex; align-items:flex-end; justify-content:space-between; gap:12px; margin-bottom:14px;\}\
+    h2\{margin:0; font-size:1.6rem\}\
+    .hint\{color:var(--muted); font-weight:800; font-size:.95rem\}\
+\
+    .hero\{padding:56px 0 26px\}\
+    .hero-grid\{display:grid; grid-template-columns: 1.15fr .85fr; gap:22px;\}\
+    .hero-card\{\
+      background: rgba(18,27,46,.72);\
+      border:1px solid var(--border);\
+      border-radius: var(--radius);\
+      padding: 18px;\
+      box-shadow: var(--shadow);\
+    \}\
+    .tag\{\
+      display:inline-flex; gap:8px; align-items:center;\
+      padding:6px 10px; border-radius:999px;\
+      border:1px solid var(--border);\
+      background: rgba(255,255,255,.05);\
+      color: var(--muted);\
+      font-weight:900; font-size:.85rem;\
+    \}\
+    .hero h1\{font-size: clamp(2rem, 4vw, 3.2rem); line-height:1.1; margin:10px 0 12px\}\
+    .hero p\{color:var(--muted); margin:0 0 18px\}\
+\
+    .grid\{display:grid; gap:14px; grid-template-columns: repeat(12, 1fr);\}\
+    .card\{\
+      grid-column: span 6;\
+      background: rgba(18,27,46,.72);\
+      border:1px solid var(--border);\
+      border-radius: var(--radius);\
+      padding: 16px;\
+      box-shadow: var(--shadow);\
+    \}\
+    .card.small\{grid-column: span 4\}\
+    .card.full\{grid-column: span 12\}\
+    .card p\{color:var(--muted); margin: 8px 0 0\}\
+\
+    .list\{display:grid; gap:10px; margin-top:10px;\}\
+    .item\{\
+      display:flex; gap:10px; align-items:flex-start;\
+      padding:12px; border:1px solid var(--border);\
+      border-radius: 16px; background: rgba(255,255,255,.04);\
+    \}\
+    .icon\{\
+      width:38px; height:38px; border-radius:14px;\
+      display:grid; place-items:center;\
+      background: rgba(255,255,255,.06);\
+      border:1px solid var(--border);\
+      flex:0 0 auto; font-weight:900;\
+    \}\
+    .item b\{display:block\}\
+    .item span\{display:block; color:var(--muted); font-weight:800; font-size:.92rem\}\
+\
+    footer\{padding: 30px 0 40px; border-top:1px solid var(--border); color: var(--muted);\}\
+    .footer-grid\{display:grid; grid-template-columns: 1.2fr .8fr .8fr; gap:16px;\}\
+    .footer-grid a\{color:var(--muted); text-decoration:none\}\
+    .footer-grid a:hover\{color:var(--text)\}\
+    .copyright\{margin-top:16px; font-size:.9rem\}\
+\
+    @media (max-width: 980px)\{\
+      .hero-grid\{grid-template-columns: 1fr\}\
+      nav ul\{display:none\}\
+      .menu-btn\{display:inline-flex\}\
+      .card.small\{grid-column: span 6\}\
+      .footer-grid\{grid-template-columns: 1fr\}\
+    \}\
+    @media (max-width: 560px)\{\
+      .card, .card.small\{grid-column: span 12\}\
+    \}\
+  </style>\
+</head>\
+\
+<body>\
+<header>\
+  <div class="container">\
+    <div class="nav">\
+      <a class="brand" href="#inicio">\
+        <div class="crest"><img src="escudo-rotlet-molinar.jpg" alt="Escudo U.D. Rotlet Molinar"></div>\
+        <div class="title">\
+          <strong>U.D. Rotlet Molinar</strong>\
+          <span>Campus \'b7 Escoleta \'b7 Equipos \'b7 Mejora</span>\
+        </div>\
+      </a>\
+\
+      <nav>\
+        <ul>\
+          <li><a href="#campus">Campus</a></li>\
+          <li><a href="#escoleta">Escoleta</a></li>\
+          <li><a href="#equipos">Equipos</a></li>\
+          <li><a href="#mejora">Mejora</a></li>\
+          <li><a href="#sponsors">Sponsors</a></li>\
+          <li><a href="#contacto">Contacto</a></li>\
+        </ul>\
+      </nav>\
+\
+      <div class="nav-actions">\
+        <a class="btn secondary" href="#campus">Inscripciones</a>\
+        <a class="btn" href="#contacto">Contacto</a>\
+        <a class="btn secondary menu-btn" href="#menu">Men\'fa</a>\
+      </div>\
+    </div>\
+  </div>\
+</header>\
+\
+<main id="inicio">\
+  <section class="hero">\
+    <div class="container">\
+      <div class="hero-grid">\
+        <div class="hero-card">\
+          <span class="tag">\uc0\u9917  U.D. Rotlet Molinar</span>\
+          <h1>Formaci\'f3n, valores y f\'fatbol.<br>Bienvenidos al <span style="color:var(--accent)">Rotlet Molinar</span>.</h1>\
+          <p>Campus de verano, escoleta, equipos, sesiones de mejora y patrocinio.</p>\
+          <div style="display:flex; gap:10px; flex-wrap:wrap">\
+            <a class="btn" href="#campus">Ver Campus</a>\
+            <a class="btn secondary" href="#escoleta">Ver Escoleta</a>\
+          </div>\
+        </div>\
+\
+        <div class="hero-card">\
+          <span class="tag">\uc0\u55357 \u56525  Instalaciones</span>\
+          <h3 style="margin:10px 0 0">Campo del Rotlet Molinar</h3>\
+          <p>\
+            <a class="btn secondary" href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">\
+              C\'f3mo llegar (Google Maps)\
+            </a>\
+          </p>\
+        </div>\
+      </div>\
+    </div>\
+  </section>\
+\
+  <!-- CAMPUS -->\
+  <section id="campus">\
+    <div class="container">\
+      <div class="section-title">\
+        <h2>Campus de Verano 2026</h2>\
+        <div class="hint">29 junio \'96 7 agosto \'b7 3 a 15 a\'f1os \'b7 09:00\'9614:00</div>\
+      </div>\
+\
+      <div class="grid">\
+        <div class="card">\
+          <span class="tag">\uc0\u9917  Campus</span>\
+          <h3 style="margin:10px 0 0">F\'fatbol + actividades</h3>\
+          <p>Entrenamientos, juegos, piscina diaria y <b>viernes playa</b>.</p>\
+\
+          <div class="list">\
+            <div class="item"><div class="icon">\uc0\u55357 \u56525 </div><div><b>Lugar</b><span><a href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Campo del Rotlet Molinar</a></span></div></div>\
+            <div class="item"><div class="icon">\uc0\u55356 \u57093 </div><div><b>Extras</b><span>Matinera 08:00\'9609:00 \'b7 Comedor 14:00\'9615:15</span></div></div>\
+          </div>\
+        </div>\
+\
+        <div class="card">\
+          <span class="tag">\uc0\u55357 \u56502  Precios</span>\
+          <h3 style="margin:10px 0 0">Por semanas</h3>\
+          <div class="list">\
+            <div class="item"><div class="icon">1</div><div><b>1 semana</b><span>80 \'80</span></div></div>\
+            <div class="item"><div class="icon">2</div><div><b>2 semanas</b><span>150 \'80</span></div></div>\
+            <div class="item"><div class="icon">3</div><div><b>3 semanas</b><span>230 \'80</span></div></div>\
+            <div class="item"><div class="icon">4</div><div><b>4 semanas</b><span>300 \'80</span></div></div>\
+            <div class="item"><div class="icon">5</div><div><b>5 semanas</b><span>380 \'80</span></div></div>\
+            <div class="item"><div class="icon">6</div><div><b>6 semanas</b><span>460 \'80</span></div></div>\
+          </div>\
+          <p><b style="color:var(--text)">Descuento hermanos</b> (indicar en la inscripci\'f3n).</p>\
+        </div>\
+\
+        <div class="card full">\
+          <span class="tag">\uc0\u55357 \u56541  Inscripci\'f3n</span>\
+          <h3 style="margin:10px 0 0">Contacto y pago</h3>\
+          <div class="grid" style="margin-top:12px">\
+            <div class="card" style="grid-column:span 6; background: rgba(255,255,255,.04); box-shadow:none">\
+              <b style="display:block; margin-bottom:6px">\uc0\u55357 \u56542  Tel\'e9fonos</b>\
+              <div style="color:var(--muted); font-weight:800">\
+                \'95 652 480 633<br>\'95 606 302 463\
+              </div>\
+            </div>\
+            <div class="card" style="grid-column:span 6; background: rgba(255,255,255,.04); box-shadow:none">\
+              <b style="display:block; margin-bottom:6px">\uc0\u55357 \u56499  IBAN</b>\
+              <div style="color:var(--muted); font-weight:800">\
+                <b style="color:var(--text)">ES33 2100 6863 3413 0033 8352</b><br>\
+                UNI\'d3N DEPORTIVA ROTLET MOLINAR\
+              </div>\
+            </div>\
+          </div>\
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">\
+            <a class="btn" href="https://wa.me/34652480633?text=Hola%20UD%20Rotlet%20Molinar,%20quiero%20inscribirme%20en%20el%20Campus%202026." target="_blank" rel="noopener">WhatsApp</a>\
+            <a class="btn secondary" href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">C\'f3mo llegar</a>\
+          </div>\
+        </div>\
+      </div>\
+    </div>\
+  </section>\
+\
+  <!-- ESCOLETA -->\
+  <section id="escoleta">\
+    <div class="container">\
+      <div class="section-title">\
+        <h2>Escoleta 2026\'962027</h2>\
+        <div class="hint">Mar y Jue 17:30\'9618:30 \'b7 35\'80/mes</div>\
+      </div>\
+\
+      <div class="grid">\
+        <div class="card">\
+          <span class="tag">\uc0\u55357 \u56438  Iniciaci\'f3n</span>\
+          <h3 style="margin:10px 0 0">Aprenden jugando</h3>\
+          <div class="list">\
+            <div class="item"><div class="icon">\uc0\u9200 </div><div><b>Horario</b><span>Martes y jueves \'b7 17:30\'9618:30</span></div></div>\
+            <div class="item"><div class="icon">\uc0\u55357 \u56517 </div><div><b>Temporada</b><span>14 septiembre \'96 30 junio</span></div></div>\
+            <div class="item"><div class="icon">\uc0\u55357 \u56525 </div><div><b>Lugar</b><span><a href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Campo del Rotlet Molinar</a></span></div></div>\
+          </div>\
+          <p>Monitores: <b style="color:var(--text)">1 por cada 10\'9612 ni\'f1os</b>.</p>\
+        </div>\
+\
+        <div class="card">\
+          <span class="tag">\uc0\u55357 \u56502  Cuotas</span>\
+          <h3 style="margin:10px 0 0">Precio</h3>\
+          <div class="list">\
+            <div class="item"><div class="icon">\'80</div><div><b>Cuota mensual</b><span>35 \'80</span></div></div>\
+            <div class="item"><div class="icon">\uc0\u55358 \u56830 </div><div><b>Matr\'edcula</b><span>60 / 65 \'80</span></div></div>\
+          </div>\
+          <p>Matr\'edcula incluye: seguro + equipaci\'f3n + bal\'f3n.</p>\
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">\
+            <a class="btn" href="https://wa.me/34652480633?text=Hola%20UD%20Rotlet%20Molinar,%20quiero%20informaci%C3%B3n%20de%20la%20Escoleta%202026-2027." target="_blank" rel="noopener">WhatsApp</a>\
+            <a class="btn secondary" href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">C\'f3mo llegar</a>\
+          </div>\
+        </div>\
+      </div>\
+    </div>\
+  </section>\
+\
+  <!-- EQUIPOS -->\
+  <section id="equipos">\
+    <div class="container">\
+      <div class="section-title">\
+        <h2>Equipos</h2>\
+        <div class="hint">Prebenjam\'edn \'b7 Benjam\'edn \'b7 Alev\'edn \'b7 Infantil \'b7 Cadete \'b7 Juvenil \'b7 1\'ba Equipo</div>\
+      </div>\
+\
+      <div class="card full">\
+        <span class="tag">\uc0\u8505 \u65039  Pruebas</span>\
+        <h3 style="margin:10px 0 0">\'bfQuieres venir a probar?</h3>\
+        <p>Escr\'edbenos y te decimos el grupo recomendado.</p>\
+        <a class="btn" href="https://wa.me/34652480633?text=Hola%20UD%20Rotlet%20Molinar,%20quiero%20venir%20a%20probar." target="_blank" rel="noopener">WhatsApp</a>\
+      </div>\
+    </div>\
+  </section>\
+\
+  <!-- MEJORA -->\
+  <section id="mejora">\
+    <div class="container">\
+      <div class="section-title">\
+        <h2>Sesiones de mejora</h2>\
+        <div class="hint">6 a 15 a\'f1os \'b7 Lunes 17:30\'9618:30 \'b7 Martes 18:30\'9619:30</div>\
+      </div>\
+\
+      <div class="grid">\
+        <div class="card">\
+          <span class="tag">\uc0\u9200  Horarios</span>\
+          <div class="list">\
+            <div class="item"><div class="icon">L</div><div><b>Lunes</b><span>17:30 \'96 18:30</span></div></div>\
+            <div class="item"><div class="icon">M</div><div><b>Martes</b><span>18:30 \'96 19:30</span></div></div>\
+          </div>\
+        </div>\
+\
+        <div class="card">\
+          <span class="tag">\uc0\u55357 \u56502  Tarifas</span>\
+          <div class="list">\
+            <div class="item"><div class="icon">1</div><div><b>1 sesi\'f3n</b><span>10 \'80</span></div></div>\
+            <div class="item"><div class="icon">2</div><div><b>2 sesiones</b><span>20 \'80</span></div></div>\
+            <div class="item"><div class="icon">3</div><div><b>3 sesiones</b><span>30 \'80</span></div></div>\
+            <div class="item"><div class="icon">4</div><div><b>4 sesiones</b><span>35 \'80</span></div></div>\
+            <div class="item"><div class="icon">\'80</div><div><b>Matr\'edcula</b><span>10 \'80 (seguro)</span></div></div>\
+          </div>\
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">\
+            <a class="btn" href="https://wa.me/34652480633?text=Hola%20UD%20Rotlet%20Molinar,%20quiero%20apuntarme%20a%20Mejora." target="_blank" rel="noopener">WhatsApp</a>\
+            <a class="btn secondary" href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">C\'f3mo llegar</a>\
+          </div>\
+        </div>\
+      </div>\
+    </div>\
+  </section>\
+\
+  <!-- SPONSORS -->\
+  <section id="sponsors">\
+    <div class="container">\
+      <div class="section-title">\
+        <h2>Sponsors</h2>\
+        <div class="hint">Packs Bronce / Plata / Oro (Campus)</div>\
+      </div>\
+\
+      <div class="grid">\
+        <div class="card full">\
+          <span class="tag">\uc0\u55357 \u56547  Patrocinio</span>\
+          <h3 style="margin:10px 0 0">Visibilidad local para tu negocio</h3>\
+          <p>Contacta para recibir el dossier y condiciones.</p>\
+\
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">\
+            <a class="btn" href="https://wa.me/34652480633?text=Hola%20UD%20Rotlet%20Molinar,%20me%20interesa%20patrocinar%20el%20Campus." target="_blank" rel="noopener">WhatsApp</a>\
+            <a class="btn secondary" href="mailto:info@udrotletmolinar.com?subject=Patrocinio%20Campus%20UD%20Rotlet%20Molinar">Email</a>\
+            <a class="btn secondary" href="dossier-sponsors.png" target="_blank" rel="noopener">Ver dossier</a>\
+          </div>\
+\
+          <p style="margin-top:10px">Patrocinadores: <b style="color:var(--text)">pr\'f3ximamente</b>.</p>\
+        </div>\
+      </div>\
+    </div>\
+  </section>\
+\
+  <!-- CONTACTO -->\
+  <section id="contacto">\
+    <div class="container">\
+      <div class="section-title">\
+        <h2>Contacto</h2>\
+        <div class="hint">Inscripciones \'b7 dudas \'b7 sponsors</div>\
+      </div>\
+\
+      <div class="grid">\
+        <div class="card">\
+          <span class="tag">\uc0\u55357 \u56525  Sede</span>\
+          <h3 style="margin:10px 0 0">Campo del Rotlet Molinar</h3>\
+          <p>\
+            \uc0\u55357 \u56542  <b style="color:var(--text)">652 480 633</b><br>\
+            \uc0\u55357 \u56542  <b style="color:var(--text)">606 302 463</b><br>\
+            \uc0\u55357 \u56525  <a href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Abrir Google Maps</a>\
+          </p>\
+        </div>\
+\
+        <div class="card">\
+          <span class="tag">\uc0\u55357 \u56826 \u65039  Mapa</span>\
+          <h3 style="margin:10px 0 0">Ubicaci\'f3n</h3>\
+          <div style="position:relative; width:100%; padding-top:56.25%; border-radius:16px; overflow:hidden; border:1px solid var(--border); background:rgba(255,255,255,.04);">\
+            <iframe\
+              title="Mapa Campo del Rotlet Molinar"\
+              src="https://www.google.com/maps?q=https://maps.app.goo.gl/vAGYwWmdTUcX89gc9&output=embed"\
+              style="position:absolute; inset:0; width:100%; height:100%; border:0;"\
+              loading="lazy"\
+              referrerpolicy="no-referrer-when-downgrade"\
+              allowfullscreen>\
+            </iframe>\
+          </div>\
+          <p style="margin-top:10px; color:var(--muted); font-weight:800">\
+            Si el mapa no carga, usa \'93Abrir Google Maps\'94.\
+          </p>\
+        </div>\
+      </div>\
+    </div>\
+  </section>\
+\
+  <section id="menu">\
+    <div class="container">\
+      <div class="card full">\
+        <h3 style="margin:0 0 8px">Men\'fa (m\'f3vil)</h3>\
+        <div style="display:flex; gap:10px; flex-wrap:wrap">\
+          <a class="btn secondary" href="#campus">Campus</a>\
+          <a class="btn secondary" href="#escoleta">Escoleta</a>\
+          <a class="btn secondary" href="#equipos">Equipos</a>\
+          <a class="btn secondary" href="#mejora">Mejora</a>\
+          <a class="btn secondary" href="#sponsors">Sponsors</a>\
+          <a class="btn secondary" href="#contacto">Contacto</a>\
+        </div>\
+      </div>\
+    </div>\
+  </section>\
+</main>\
+\
+<footer>\
+  <div class="container">\
+    <div class="footer-grid">\
+      <div>\
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px">\
+          <div class="crest"><img src="escudo-rotlet-molinar.jpg" alt=""></div>\
+          <div style="font-weight:900">U.D. Rotlet Molinar</div>\
+        </div>\
+        <div>Campus, escoleta, equipos, sesiones de mejora y patrocinio.</div>\
+      </div>\
+      <div>\
+        <div style="font-weight:900; margin-bottom:8px">Secciones</div>\
+        <div style="display:grid; gap:6px">\
+          <a href="#campus">Campus</a>\
+          <a href="#escoleta">Escoleta</a>\
+          <a href="#mejora">Mejora</a>\
+          <a href="#sponsors">Sponsors</a>\
+        </div>\
+      </div>\
+      <div>\
+        <div style="font-weight:900; margin-bottom:8px">Ubicaci\'f3n</div>\
+        <div style="display:grid; gap:6px">\
+          <a href="https://maps.app.goo.gl/vAGYwWmdTUcX89gc9" target="_blank" rel="noopener">Campo del Rotlet Molinar</a>\
+          <a href="#contacto">Contacto</a>\
+        </div>\
+      </div>\
+    </div>\
+    <div class="copyright">\'a9 <span id="year"></span> U.D. Rotlet Molinar</div>\
+  </div>\
+</footer>\
+\
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>\
+</body>\
+</html>}
